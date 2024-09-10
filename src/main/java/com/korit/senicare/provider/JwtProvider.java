@@ -10,8 +10,6 @@ import java.nio.charset.StandardCharsets;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.nimbusds.jose.util.StandardCharset;
-
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -30,7 +28,7 @@ public class JwtProvider {
     // JWT 생성 메서드
     public String create(String userId) {
 
-        // 만료 시간 = 현재시간 + 10시간
+        // 만료시간 = 현재시간 + 10시간
         Date expiredDate = Date.from(Instant.now().plus(10, ChronoUnit.HOURS));
 
         String jwt = null;
@@ -38,7 +36,7 @@ public class JwtProvider {
         try {
 
             // JWT 암호화에 사용할 Key 생성
-            Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharset.UTF_8));
+            Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
             // JWT 생성
             jwt = Jwts.builder()
@@ -57,15 +55,15 @@ public class JwtProvider {
 
     }
 
-    // 검증 메서드
-    public String validate (String jwt) {
+    // JWT 검증 메서드
+    public String validate(String jwt) {
 
         String userId = null;
 
         try {
-
+            
             // JWT 암호화에 사용할 Key 생성
-            Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharset.UTF_8));
+            Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
             // jwt 검증 및 payload의 subject 값 추출
             userId = Jwts.parserBuilder()
@@ -74,7 +72,7 @@ public class JwtProvider {
                 .parseClaimsJws(jwt)
                 .getBody()
                 .getSubject();
-            
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return null;
