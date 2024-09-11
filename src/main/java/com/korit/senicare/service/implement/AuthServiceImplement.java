@@ -61,7 +61,8 @@ public class AuthServiceImplement implements AuthService {
 
         String authNumber = AuthNumberCreator.number4();
 
-        smsProvider.sendMessage(telNumber, authNumber);
+        boolean isSendSuccess = smsProvider.sendMessage(telNumber, authNumber);
+        if (!isSendSuccess) return ResponseDto.messageSendFail();
 
         try {
 
@@ -75,6 +76,13 @@ public class AuthServiceImplement implements AuthService {
 
         return ResponseDto.success();
         
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> telAuthCheck(TelAuthRequestDto dto) {
+        
+
+        return ResponseDto.success();
     }
     
 }
