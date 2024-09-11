@@ -1,11 +1,11 @@
 package com.korit.senicare.service.implement;
 
-// import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.korit.senicare.common.util.AuthNumberCreator;
 import com.korit.senicare.dto.request.auth.IdCheckRequestDto;
+import com.korit.senicare.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.senicare.dto.request.auth.TelAuthRequestDto;
 import com.korit.senicare.dto.response.ResponseDto;
 import com.korit.senicare.entity.TelAuthNumberEntity;
@@ -31,11 +31,11 @@ public class AuthServiceImplement implements AuthService {
         String userId = dto.getUserId();
 
         try {
-            
+
             boolean isExistedId = nurseRepository.existsByUserId(userId);
             if (isExistedId) return ResponseDto.duplicatedUserId();
 
-        } catch (Exception exception) {
+        } catch(Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -46,15 +46,15 @@ public class AuthServiceImplement implements AuthService {
 
     @Override
     public ResponseEntity<ResponseDto> telAuth(TelAuthRequestDto dto) {
-
+        
         String telNumber = dto.getTelNumber();
 
         try {
-            
+
             boolean isExistedTelNumber = nurseRepository.existsByTelNumber(telNumber);
             if (isExistedTelNumber) return ResponseDto.duplicatedTelNumber();
 
-        } catch (Exception exception) {
+        } catch(Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
@@ -68,21 +68,34 @@ public class AuthServiceImplement implements AuthService {
 
             TelAuthNumberEntity telAuthNumberEntity = new TelAuthNumberEntity(telNumber, authNumber);
             telAuthNumberRepository.save(telAuthNumberEntity);
+
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success();
+
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> telAuthCheck(TelAuthCheckRequestDto dto) {
+        
+        String telNumber = dto.getTelNumber();
+        String authNumber = dto.getAuthNumber();
+
+        try {
             
+            boolean isMatched = telAuthNumberRepository.existsByTelNumberAndAuthNumber(telNumber, authNumber);
+            if (!isMatched) return ResponseDto.telAuthFail();
+
         } catch (Exception exception) {
             exception.printStackTrace();
             return ResponseDto.databaseError();
         }
 
         return ResponseDto.success();
-        
+
     }
 
-    @Override
-    public ResponseEntity<ResponseDto> telAuthCheck(TelAuthRequestDto dto) {
-        
-
-        return ResponseDto.success();
-    }
-    
 }

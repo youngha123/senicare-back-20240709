@@ -8,7 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class TelAuthCheckRequest {
+public class TelAuthCheckRequestDto {
 
     @NotBlank
     private String telNumber;

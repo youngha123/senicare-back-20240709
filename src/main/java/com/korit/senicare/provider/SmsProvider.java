@@ -22,7 +22,6 @@ public class SmsProvider {
         @Value("${cool-sms.secret-key}") String apiSecretKey,
         @Value("${cool-sms.domain}") String domain,
         @Value("${cool-sms.from}") String from
-        
     ) {
         this.messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecretKey, domain);
         this.from = from;
@@ -33,13 +32,14 @@ public class SmsProvider {
         Message message = new Message();
         message.setFrom(from);
         message.setTo(to);
-        message.setText("Senicare 인증 번호 [" + authNumber + "]를 정확히 입력해주세요.");
+        message.setText("Senicare 인증 번호 [" + authNumber + "] 를 정확히 입력해주세요.");
 
         SingleMessageSendingRequest request = new SingleMessageSendingRequest(message);
         SingleMessageSentResponse response = messageService.sendOne(request);
 
         boolean resultStatus = response.getStatusCode().equals("2000");
         return resultStatus;
+
     }
 
 }
