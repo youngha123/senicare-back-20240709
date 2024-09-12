@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `senicare`.`tel_auth_number` (
   `tel_number` VARCHAR(11) NOT NULL COMMENT '인증 전화번호',
   `auth_number` VARCHAR(4) NOT NULL COMMENT '인증 번호',
   PRIMARY KEY (`tel_number`),
-  UNIQUE INDEX `user_id_UNIQUE` (`tel_number` ASC) VISIBLE)
+  UNIQUE INDEX `tel_number_UNIQUE` (`tel_number` ASC) VISIBLE)
 ENGINE = InnoDB
 COMMENT = '전화번호 인증 테이블';
 
@@ -37,8 +37,8 @@ CREATE TABLE IF NOT EXISTS `senicare`.`nurses` (
   `password` VARCHAR(255) NOT NULL COMMENT '암호화된 비밀번호',
   `name` VARCHAR(15) NOT NULL COMMENT '요양사 이름',
   `tel_number` VARCHAR(11) NOT NULL COMMENT '요양사 전화번호',
-  `join_Path` VARCHAR(5) NOT NULL COMMENT '가입 경로(HOME:기본, KAKAO: 카카오, NAVER: 네이버)',
-  `sns_id` VARCHAR(255) COMMENT 'OAuth2 id',
+  `join_path` VARCHAR(5) NOT NULL COMMENT '가입 경로 ( HOME : 기본, KAKAO : 카카오, NAVER : 네이버 )',
+  `sns_id` VARCHAR(255) NULL COMMENT 'OAuth2 아이디',
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE,
   UNIQUE INDEX `tel_number_UNIQUE` (`tel_number` ASC) VISIBLE,
@@ -56,15 +56,15 @@ COMMENT = '요양사 테이블';
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `senicare`.`customers` (
   `custom_number` INT NOT NULL AUTO_INCREMENT COMMENT '고객 번호',
-  `profile_image` TEXT NULL COMMENT '고객 프로필 사진',
+  `profile_image` TEXT NOT NULL COMMENT '고객 프로필 사진',
   `name` VARCHAR(15) NOT NULL COMMENT '고객 이름',
-  `birth` VARCHAR(6) NOT NULL COMMENT '고객 생년월일(YYMMDD)',
+  `birth` VARCHAR(6) NOT NULL COMMENT '고객 생년월일 (YYMMDD)',
   `charger` VARCHAR(20) NOT NULL COMMENT '담당 요양사',
   `address` TEXT NOT NULL COMMENT '주소',
-  `location` VARCHAR(60) NOT NULL COMMENT '지역(시, 도)',
-  UNIQUE INDEX `custom_number_UNIQUE` (`custom_number` ASC) VISIBLE,
+  `location` VARCHAR(60) NOT NULL COMMENT '지역 (시, 도)',
   PRIMARY KEY (`custom_number`),
-  INDEX `charger_idx` (`charger` ASC) VISIBLE,
+  UNIQUE INDEX `custom_number_UNIQUE` (`custom_number` ASC) VISIBLE,
+  INDEX `customer_charger_idx` (`charger` ASC) VISIBLE,
   CONSTRAINT `customer_charger`
     FOREIGN KEY (`charger`)
     REFERENCES `senicare`.`nurses` (`user_id`)
@@ -96,14 +96,14 @@ CREATE TABLE IF NOT EXISTS `senicare`.`care_records` (
   `record_date` DATE NOT NULL COMMENT '관리 기록 날짜',
   `contents` TEXT NOT NULL COMMENT '관리 내용',
   `used_tool` INT NULL COMMENT '관리에 사용한 용품',
-  `count` INT NULL COMMENT '관리 시 사용한 용품 갯수',
+  `count` INT NULL COMMENT '관리시 사용한 용품 개수',
   `charger` VARCHAR(20) NOT NULL COMMENT '관리 담당 요양사',
   `custom_number` INT NOT NULL COMMENT '관리 대상 고객',
   PRIMARY KEY (`record_number`),
   UNIQUE INDEX `record_number_UNIQUE` (`record_number` ASC) VISIBLE,
-  INDEX `use_tool_idx` (`used_tool` ASC) VISIBLE,
-  INDEX `customer_charger_idx` (`charger` ASC) VISIBLE,
-  INDEX `custom_number_idx` (`custom_number` ASC) VISIBLE,
+  INDEX `used_tools_idx` (`used_tool` ASC) VISIBLE,
+  INDEX `record_charger_idx` (`charger` ASC) VISIBLE,
+  INDEX `cared_customer_idx` (`custom_number` ASC) VISIBLE,
   CONSTRAINT `used_tools`
     FOREIGN KEY (`used_tool`)
     REFERENCES `senicare`.`tools` (`tool_number`)
