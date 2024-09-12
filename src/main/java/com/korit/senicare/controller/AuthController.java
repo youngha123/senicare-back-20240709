@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.korit.senicare.dto.request.auth.IdCheckRequestDto;
+import com.korit.senicare.dto.request.auth.SignUpRequestDto;
 import com.korit.senicare.dto.request.auth.TelAuthCheckRequestDto;
 import com.korit.senicare.dto.request.auth.TelAuthRequestDto;
 import com.korit.senicare.dto.response.ResponseDto;
@@ -44,6 +45,15 @@ public class AuthController {
     ) {
         ResponseEntity<ResponseDto> response = authService.telAuthCheck(requestBody);
         return response;
+    }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<ResponseDto> signUp(
+        @RequestBody @Valid SignUpRequestDto requestBody
+    ) {
+        ResponseEntity<ResponseDto> response = authService.signUp(requestBody);
+        return response;
+
     }
 
 }
