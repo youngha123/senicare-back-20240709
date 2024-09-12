@@ -14,6 +14,7 @@ public interface ResponseCode {
     String SIGN_IN_FIIL = "SF";
 
     String MESSAGE_SEND_FAIL = "TF";
+    String TOKEN_CREATE_FAIL = "TCF";
     String DATABASE_ERROR = "DBE";
 
 }

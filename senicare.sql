@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `senicare`.`nurses` (
   `name` VARCHAR(15) NOT NULL COMMENT '요양사 이름',
   `tel_number` VARCHAR(11) NOT NULL COMMENT '요양사 전화번호',
   `join_Path` VARCHAR(5) NOT NULL COMMENT '가입 경로(HOME:기본, KAKAO: 카카오, NAVER: 네이버)',
-  `sns_id` VARCHAR(255) NOT NULL COMMENT 'OAuth2 id',
+  `sns_id` VARCHAR(255) COMMENT 'OAuth2 id',
   PRIMARY KEY (`user_id`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC) VISIBLE,
   UNIQUE INDEX `tel_number_UNIQUE` (`tel_number` ASC) VISIBLE,
