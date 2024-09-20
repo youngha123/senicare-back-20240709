@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.korit.senicare.dto.request.tool.PostToolRequestDto;
 import com.korit.senicare.dto.response.ResponseDto;
 import com.korit.senicare.dto.response.tool.GetToolListResponseDto;
+import com.korit.senicare.dto.response.tool.GetToolResponseDto;
 import com.korit.senicare.entity.ToolEntity;
 import com.korit.senicare.repository.ToolRepository;
 import com.korit.senicare.service.ToolService;
@@ -53,6 +54,25 @@ public class ToolServiceImplement implements ToolService {
         }
 
         return GetToolListResponseDto.success(toolEntities);
+
+    }
+
+    @Override
+    public ResponseEntity<? super GetToolResponseDto> getTool(Integer toolNumber) {
+
+        ToolEntity toolEntity = null;
+        
+        try {
+
+            toolEntity = toolRepository.findByToolNumber(toolNumber);
+            if (toolEntity == null) return ResponseDto.noExistTool();
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetToolResponseDto.success(toolEntity);
 
     }
 
