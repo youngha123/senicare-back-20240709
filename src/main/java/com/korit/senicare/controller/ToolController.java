@@ -19,20 +19,20 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/v1/tool")
 @RequiredArgsConstructor
 public class ToolController {
-
-    private final ToolService toolService;
+    
+    private final ToolService toolSerivce;
 
     @PostMapping(value={"", "/"})
     public ResponseEntity<ResponseDto> postTool(
         @RequestBody @Valid PostToolRequestDto requestBody
-    ){
-        ResponseEntity<ResponseDto> response = toolService.postTool(requestBody);
+    ) {
+        ResponseEntity<ResponseDto> response = toolSerivce.postTool(requestBody);
         return response;
     }
-    
+
     @GetMapping(value={"", "/"})
     public ResponseEntity<? super GetToolListResponseDto> getToolList() {
-        ResponseEntity<? super GetToolListResponseDto> response = ToolService.getToolList();
+        ResponseEntity<? super GetToolListResponseDto> response = toolSerivce.getToolList();
         return response;
     }
 
