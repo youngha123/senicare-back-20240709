@@ -20,7 +20,7 @@ public class GetNurseListResponseDto extends ResponseDto {
 
     private GetNurseListResponseDto(List<NurseEntity> nurseEntities) {
         super(ResponseCode.SUCCESS, ResponseMessage.SUCCESS);
-        this.nurses = Nurse.getList(null);
+        this.nurses = Nurse.getList(nurseEntities);
     }
 
     public static ResponseEntity<GetNurseListResponseDto> success(List<NurseEntity> nurseEntities) {
