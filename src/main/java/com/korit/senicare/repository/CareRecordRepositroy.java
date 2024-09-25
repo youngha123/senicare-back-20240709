@@ -11,6 +11,6 @@ import jakarta.transaction.Transactional;
 public interface CareRecordRepositroy extends JpaRepository<CareRecordEntity, Integer> {
     
     @Transactional
-    void deleteByCustomNumber(Integer customerNumber);
+    void deleteByCustomerNumber(Integer customerNumber);
 
 }
