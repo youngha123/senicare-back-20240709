@@ -12,6 +12,7 @@ import com.korit.senicare.dto.response.ResponseDto;
 import com.korit.senicare.dto.response.customer.GetCustomerListResponseDto;
 import com.korit.senicare.dto.response.customer.GetCustomerResponseDto;
 import com.korit.senicare.entity.CustomerEntity;
+import com.korit.senicare.repository.CareRecordRepositroy;
 import com.korit.senicare.repository.CustomerRepository;
 import com.korit.senicare.repository.NurseRepository;
 import com.korit.senicare.repository.resultSet.GetCustomerResultSet;
@@ -26,6 +27,7 @@ public class CustomerServiceImplement implements CustomerService {
 
     private final NurseRepository nurseRepository;
     private final CustomerRepository customerRepository;
+    private final CareRecordRepositroy careRecordRepository;
 
     @Override
     public ResponseEntity<ResponseDto> postCustomer(PostCustomerRequestDto dto) {
@@ -112,6 +114,29 @@ public class CustomerServiceImplement implements CustomerService {
 
         return ResponseDto.success();
 
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> deleteCustomer(Integer customerNumber, String userId) {
+        
+        try {
+            
+            CustomerEntity customerEntity = customerRepository.findByCustomerNumber(customerNumber);
+            if (customerEntity == null) return ResponseDto.noExistCustomer();
+
+            String charger = customerEntity.getCharger();
+            boolean isCharger = charger.equals(userId);
+            if (!isCharger) return ResponseDto.noPermission();
+
+            customerRepository.delete(customerEntity);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success();
+        
     }
     
 }

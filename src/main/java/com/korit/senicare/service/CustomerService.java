@@ -14,6 +14,7 @@ public interface CustomerService {
     ResponseEntity<? super GetCustomerListResponseDto> getCustmerList();
     ResponseEntity<? super GetCustomerResponseDto> getCustomer(Integer customerNumber);
     ResponseEntity<ResponseDto> patchCustomer(PatchCustomerRequestDto dto, Integer customerNumber, String userId);
+    ResponseEntity<ResponseDto> deleteCustomer(Integer customerNumber, String userId);
 
 }
 

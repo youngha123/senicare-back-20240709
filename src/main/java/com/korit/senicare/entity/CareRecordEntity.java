@@ -27,5 +27,5 @@ public class CareRecordEntity {
     private String usedToolName;
     private Integer count;
     private String charger;
-    private Integer customNumber;
+    private Integer customerNumber;
 }
