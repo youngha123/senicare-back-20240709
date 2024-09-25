@@ -4,13 +4,17 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.korit.senicare.entity.CustomerEntity;
 import com.korit.senicare.repository.resultSet.GetCustomerResultSet;
+import com.korit.senicare.repository.resultSet.GetCustomersResultSet;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<CustomerEntity, Integer> {
+    
+    CustomerEntity findByCustomerNumber(Integer customerNumber);
 
     @Query(
     value=
@@ -20,12 +24,29 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Intege
         "    C.birth as birth, " +
         "    C.location as location, " +
         "    N.name as chargerName, " +
-        "    N.user_id as chargerId, " +
+        "    N.user_id as chargerId " +
         "FROM customers C LEFT JOIN nurses N " +
         "ON C.charger = N.user_id " +
-        "ORDER BY C.custom_number DESC " ,
+        "ORDER BY C.custom_number DESC ",
     nativeQuery=true
     )
-    List<GetCustomerResultSet> getCustomers();
+    List<GetCustomersResultSet> getCustomers();
+
+    @Query(
+    value=
+        "SELECT " +
+        "    C.custom_number as customerNumber, " +
+        "    C.profile_image as profileImage, " +
+        "    C.name as name, " +
+        "    C.birth as birth, " +
+        "    N.name as chargerName, " +
+        "    N.user_id as chargerId, " +
+        "    C.address as address " +
+        "FROM customers C LEFT JOIN nurses N " +
+        "ON C.charger = N.user_id " +
+        "WHERE C.custom_number = :customerNumber ",
+    nativeQuery=true 
+    )
+    GetCustomerResultSet getCustomer(@Param("customerNumber") Integer customerNumber);
 
 }
