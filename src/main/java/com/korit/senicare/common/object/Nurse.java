@@ -9,12 +9,12 @@ import lombok.Getter;
 
 @Getter
 public class Nurse {
-    private String nuresId;
+    private String nurseId;
     private String name;
     private String telNumber;
 
     private Nurse (NurseEntity nurseEntity) {
-        this.nuresId = nurseEntity.getUserId();
+        this.nurseId = nurseEntity.getUserId();
         this.name = nurseEntity.getName();
         this.telNumber = nurseEntity.getTelNumber();
     }
