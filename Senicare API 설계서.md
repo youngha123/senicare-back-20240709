@@ -840,7 +840,205 @@ Content-Type: application/json;charset=UTF-8
 ```
 
 ***
+
+#### - 회원 정보 수정  
   
+##### 설명
+
+클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 사용자 이름을 입력하여 요청하고 회원가입이 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 네트워크 에러, 서버 에러, 데이터베이스 에러가 발생할 수 있습니다.  
+
+- method : **PATCH**  
+- end point : **/**  
+
+##### Request
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Authorization | Bearer 토큰 인증 헤더 | O |
+
+###### Request Body
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| name | String | 사용자의 이름 | O |
+
+###### Example
+
+```bash
+curl -v -X POST "http://localhost:4000/api/v1/nurse" \
+ -d "name=홍길동"
+```
+
+##### Response
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Content-Type | 반환되는 Response Body의 Content type (application/json) | O |
+
+###### Response Body
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| code | String | 결과 코드 | O |
+| message | String | 결과 코드에 대한 설명 | O |
+
+###### Example
+
+**응답 성공**
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+
+{
+  "code": "SU",
+  "message": "Success."
+}
+```
+
+**응답 실패 (데이터 유효성 검사 실패)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+
+{
+  "code": "VF",
+  "message": "Validation failed."
+}
+```
+
+**응답 실패 (존재하지 않는 요양사)**
+```bash
+HTTP/1.1 400 Bad Request
+Content-Type: application/json;charset=UTF-8
+
+{
+  "code": "NI",
+  "message": "No exist user id."
+}
+```
+
+**응답 : 실패 (인증 실패)**
+```bash
+HTTP/1.1 401 Unauthorized
+Content-Type: application/json;charset=UTF-8
+
+{
+  "code": "AF",
+  "message": "Authentication fail."
+}
+```
+
+**응답 실패 (데이터베이스 에러)**
+```bash
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json;charset=UTF-8
+
+{
+  "code": "DBE",
+  "message": "Database error."
+}
+```
+
+***
+  
+#### - 담당 고객 리스트 보기
+  
+##### 설명
+
+클라이언트는 요청 헤더에 Bearer 인증 토큰을 포함하여 URL에 요양사 아이디를 포함하여 요청하고 조회가 성공적으로 이루어지면 성공에 대한 응답을 받습니다. 네트워크 에러, 서버 에러, 인증 실패, 데이터베이스 에러가 발생할 수 있습니다.  
+
+- method : **GET**  
+- URL : **/{nurseId}/customers**  
+
+##### Request
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Authorization | Bearer 토큰 인증 헤더 | O |
+
+###### Example
+
+```bash
+curl -X GET "http://localhost:4000/api/v1/nurse/1/customers" \
+ -h "Authorization=Bearer XXXX"
+```
+
+##### Response
+
+###### Header
+
+| name | description | required |
+|---|:---:|:---:|
+| Content-Type | 반환되는 Response Body의 Content type (application/json) | O |
+
+###### Response Body
+
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| code | String | 결과 코드 | O |
+| message | String | 결과 코드에 대한 설명 | O |
+| customers | ChargedCustomer[] | 담당 고객 리스트 | O |
+  
+**ChargedCustomer**  
+| name | type | description | required |
+|---|:---:|:---:|:---:|
+| customerNumber | Integer | 고객 번호 | O |
+| name | String | 고객 이름 | O |
+| birth | String | 고객 생년월일 | O |
+| location | String | 지역 | O |
+
+###### Example
+
+**응답 성공**
+```bash
+HTTP/1.1 200 OK
+Content-Type: application/json;charset=UTF-8
+
+{
+  "code": "SU",
+  "message": "Success.",
+  "customers": [
+    {
+      "customerNumber": 1,
+      "name": "홍길동",
+      "birth": "600301",
+      "location": "부산광역시 부산진구",
+    },
+    ...
+  ]
+}
+```
+
+**응답 : 실패 (인증 실패)**
+```bash
+HTTP/1.1 401 Unauthorized
+Content-Type: application/json;charset=UTF-8
+
+{
+  "code": "AF",
+  "message": "Authentication fail."
+}
+```
+
+**응답 실패 (데이터베이스 에러)**
+```bash
+HTTP/1.1 500 Internal Server Error
+Content-Type: application/json;charset=UTF-8
+
+{
+  "code": "DBE",
+  "message": "Database error."
+}
+```
+
+***
+
 <h2 style='background-color: rgba(55, 55, 55, 0.2); text-align: center'>Tool 모듈</h2>
 
 Senicare 서비스의 용품과 관련된 REST API 모듈입니다.  
@@ -1541,7 +1739,7 @@ Content-Type: application/json;charset=UTF-8
 {
   "code": "SU",
   "message": "Success.",
-  "tools": [
+  "customers": [
     {
       "customerNumber": 1,
       "name": "홍길동",
@@ -1949,7 +2147,7 @@ Content-Type: application/json;charset=UTF-8
 |---|:---:|:---:|:---:|
 | contents | String | 내용 | O |
 | usedToolNumber | Integer | 사용 용품 번호 | X |
-| count | String | 개수 | X |
+| count | Integer | 개수 | X |
 
 ###### Example
 

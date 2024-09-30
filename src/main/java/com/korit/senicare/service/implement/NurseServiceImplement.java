@@ -3,15 +3,18 @@ package com.korit.senicare.service.implement;
 import java.util.List;
 import java.util.ArrayList;
 
+import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.korit.senicare.common.object.ChargedCustomer;
 import com.korit.senicare.dto.request.nurse.PatchNurseRequestDto;
 import com.korit.senicare.dto.response.ResponseDto;
 import com.korit.senicare.dto.response.nurse.GetChargedCustomerResponseDto;
 import com.korit.senicare.dto.response.nurse.GetNurseListResponseDto;
 import com.korit.senicare.dto.response.nurse.GetNurseResponseDto;
 import com.korit.senicare.dto.response.nurse.GetSignInResponseDto;
+import com.korit.senicare.entity.CustomerEntity;
 import com.korit.senicare.entity.NurseEntity;
 import com.korit.senicare.repository.NurseRepository;
 import com.korit.senicare.service.NurseService;
@@ -104,6 +107,17 @@ public class NurseServiceImplement implements NurseService {
     @Override
     public ResponseEntity<? super GetChargedCustomerResponseDto> getChargedCustomer(String nurseId) {
         
+        List<CustomerEntity> customerEntities = new ArrayList<>();
+
+        try {
+
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return GetChargedCustomerResponseDto.success(customerEntities);
     }
     
 }
