@@ -47,7 +47,7 @@ public interface CustomerRepository extends JpaRepository<CustomerEntity, Intege
         "FROM customers C LEFT JOIN nurses N " +
         "ON C.charger = N.user_id " +
         "WHERE C.customer_number = :customerNumber ",
-    nativeQuery=true 
+    nativeQuery=true
     )
     GetCustomerResultSet getCustomer(@Param("customerNumber") Integer customerNumber);
 
