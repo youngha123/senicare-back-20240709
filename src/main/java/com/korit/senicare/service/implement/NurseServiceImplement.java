@@ -3,11 +3,9 @@ package com.korit.senicare.service.implement;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.aspectj.apache.bcel.generic.RET;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.korit.senicare.common.object.ChargedCustomer;
 import com.korit.senicare.dto.request.nurse.PatchNurseRequestDto;
 import com.korit.senicare.dto.response.ResponseDto;
 import com.korit.senicare.dto.response.nurse.GetChargedCustomerResponseDto;
