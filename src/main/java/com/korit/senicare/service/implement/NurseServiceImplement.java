@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.korit.senicare.dto.request.nurse.PatchNurseRequestDto;
 import com.korit.senicare.dto.response.ResponseDto;
+import com.korit.senicare.dto.response.nurse.GetChargedCustomerResponseDto;
 import com.korit.senicare.dto.response.nurse.GetNurseListResponseDto;
 import com.korit.senicare.dto.response.nurse.GetNurseResponseDto;
 import com.korit.senicare.dto.response.nurse.GetSignInResponseDto;
@@ -76,6 +78,32 @@ public class NurseServiceImplement implements NurseService {
 
         return GetNurseResponseDto.success(nurseEntity);
 
+    }
+
+    @Override
+    public ResponseEntity<ResponseDto> patchNurse(PatchNurseRequestDto dto, String userId) {
+
+        try {
+
+            String name = dto.getName();
+
+            NurseEntity nurseEntity = nurseRepository.findByUserId(userId);
+            if (nurseEntity == null) return ResponseDto.noExistUserId();
+            nurseEntity.setName(name);
+
+            nurseRepository.save(nurseEntity);
+            
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return ResponseDto.databaseError();
+        }
+
+        return ResponseDto.success();
+    }
+
+    @Override
+    public ResponseEntity<? super GetChargedCustomerResponseDto> getChargedCustomer(String nurseId) {
+        
     }
     
 }
