@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.korit.senicare.common.object.ChargedCustomer;
 import com.korit.senicare.dto.request.nurse.PatchNurseRequestDto;
 import com.korit.senicare.dto.response.ResponseDto;
-import com.korit.senicare.dto.response.nurse.GetChargedCustomerResponseDto;
 import com.korit.senicare.dto.response.nurse.GetChargedCustomerResponseDto;
 import com.korit.senicare.dto.response.nurse.GetNurseListResponseDto;
 import com.korit.senicare.dto.response.nurse.GetNurseResponseDto;
